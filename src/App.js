@@ -1,3 +1,5 @@
+import firebase from './services/firebaseConection'
+
 const App = () => {
   return (
     <div>
