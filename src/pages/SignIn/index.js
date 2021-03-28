@@ -16,7 +16,7 @@ const Signin = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        if(email != '' && password != ''){
+        if(email !== '' && password !== ''){
             signin(email, password);
         }
 
