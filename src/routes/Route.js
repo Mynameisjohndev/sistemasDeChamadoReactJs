@@ -14,7 +14,6 @@ function RouteWrapper ({
     if(loading){
         return(
             <div>
-                
             </div>
         )
     }

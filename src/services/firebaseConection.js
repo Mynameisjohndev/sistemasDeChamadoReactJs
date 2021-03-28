@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
-
+import 'firebase/firestore'
 let firebaseConfig = {
     apiKey: "AIzaSyBetjQjhqLAuD7JXTkr7N8ViOF001JfJbA",
     authDomain: "sistemasdechamadas.firebaseapp.com",
