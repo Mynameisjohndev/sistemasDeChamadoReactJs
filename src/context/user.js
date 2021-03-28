@@ -49,8 +49,14 @@ function UserProvider({ children }) {
         })    
     }
 
-    const storageUser = (data) => {
+    const storageUser =  (data) => {
         localStorage.setItem("sistemaUser", JSON.stringify(data))
+    }
+
+     const signout = async() =>{
+        await Firebase.auth().signOut();
+        localStorage.removeItem('SistemaUser');
+        setUser(null);
     }
 
     return (
@@ -58,7 +64,9 @@ function UserProvider({ children }) {
             signed: !!user, 
             user, 
             loading,
-            signup }}>
+            signup,
+            signout
+            }}>
             {children}
         </UserContext.Provider>
     );
