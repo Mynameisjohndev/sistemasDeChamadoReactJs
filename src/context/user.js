@@ -55,7 +55,7 @@ function UserProvider({ children }) {
 
      const signout = async() =>{
         await Firebase.auth().signOut();
-        localStorage.removeItem('SistemaUser');
+        localStorage.removeItem('sistemaUser');
         setUser(null);
     }
 
