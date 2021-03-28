@@ -1,5 +1,7 @@
-
 import { Redirect, Route } from 'react-router-dom';
+import {useContext} from 'react'
+
+import { UserContext } from '../context/user'
 
 function RouteWrapper ({
     component: Component,
@@ -7,12 +9,12 @@ function RouteWrapper ({
     ...rest
 })  {
 
-    const loading = false;
-    const signed = false;
+    const { signed, loading } = useContext(UserContext)
 
     if(loading){
         return(
             <div>
+                
             </div>
         )
     }
