@@ -9,6 +9,11 @@ const Signin = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        alert("Clicou")
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.login}>
@@ -16,10 +21,10 @@ const Signin = () => {
                     <img src={Logo} alt="logo-do-sistema" />
                 </div>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <h1>Entrar</h1>
-                        <input type="text" placeholder="Insira seu email" />
-                        <input type="password" placeholder="********" />
+                        <input onChange={(e)=>setEmail(e.target.valuea)} type="text" placeholder="Insira seu email" />
+                        <input onChange={(e)=>setPassword(e.target.valuea)} type="password" placeholder="********" />
                         <button type="submit">Acessar</button>
                     </form>
 
