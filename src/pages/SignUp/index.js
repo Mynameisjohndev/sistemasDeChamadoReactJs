@@ -7,7 +7,7 @@ import {UserContext} from '../../context/user'
 
 const Signup = () => {
 
-    const { signup } = useContext(UserContext)
+    const { signup, loadingAuth } = useContext(UserContext)
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -33,7 +33,7 @@ const Signup = () => {
                         <input onChange={(e)=>setName(e.target.value)} type="text" placeholder="Insira seu nome" />
                         <input onChange={(e)=>setEmail(e.target.value)} type="text" placeholder="Insira seu email" />
                         <input onChange={(e)=>setPassword(e.target.value)} type="password" placeholder="********" />
-                        <button type="submit">Acessar</button>
+                        <button type="submit">{loadingAuth ? "Carregando" : "Cadastrar"}</button>
                     </form>
                     <Link to="/">Já possui uma conta?</Link>
             </div>

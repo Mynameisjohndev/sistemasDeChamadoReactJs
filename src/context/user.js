@@ -22,7 +22,7 @@ function UserProvider({ children }) {
     }, [])
 
     async function signup(email, password, name) {
-        setLoading(true);
+        setLoadingAuth(true);
         await Firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(async (value) => {
                 let uid = value.user.uid;
@@ -40,33 +40,58 @@ function UserProvider({ children }) {
                         }
                         setUser(data)
                         storageUser(data)
-                        setLoading(false);
+                        setLoadingAuth(false);
                     })
             })
-        .catch((error)=>{
-            console.log("Error");
-            setLoading(false);
-        })    
+            .catch((error) => {
+                console.log("Error");
+                setLoadingAuth(false);
+            })
     }
 
-    const storageUser =  (data) => {
+    const storageUser = (data) => {
         localStorage.setItem("sistemaUser", JSON.stringify(data))
     }
 
-     const signout = async() =>{
+    const signout = async () => {
         await Firebase.auth().signOut();
         localStorage.removeItem('sistemaUser');
         setUser(null);
     }
 
+    const signin = async (email, password) => {      
+        setLoadingAuth(true);
+        await Firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(async (value) => {
+                let uid = value.user.uid;
+                const userProfile = await Firebase.firestore().collection('users')
+                    .doc(uid).get()
+                let data = {
+                    uid: uid,
+                    name: userProfile.data().name,
+                    email: value.user.email,
+                    avatarUrl: userProfile.data().avatarUrl,
+                }
+                setUser(data)
+                storageUser(data)
+                setLoadingAuth(false);
+            })
+            .catch((error) => {
+                console.log(error)
+                setLoadingAuth(false);
+            })
+    }
+
     return (
-        <UserContext.Provider value={{ 
-            signed: !!user, 
-            user, 
+        <UserContext.Provider value={{
+            signed: !!user,
+            user,
             loading,
+            loadingAuth,
             signup,
-            signout
-            }}>
+            signout,
+            signin
+        }}>
             {children}
         </UserContext.Provider>
     );
