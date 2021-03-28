@@ -20,12 +20,12 @@ const Header = () => {
                 Chamados
             </Link>
 
-            <Link to="/dashboard">
+            <Link to="/customers">
                 <FiUser size={24} color="#fff"/>
                 Clientes
             </Link>
 
-            <Link to="/dashboard">
+            <Link to="/profile">
                 <FiSettings size={24} color="#fff"/>
                 Configurações
             </Link>
