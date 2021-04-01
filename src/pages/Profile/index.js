@@ -43,7 +43,11 @@ const Profile = () => {
                         <button type="submit">Salvar</button>
                     </form>
                 </div>
-
+                <div className="container">
+                    <button className="logout-btn">
+                                SAIR
+                    </button>
+                </div>
             </div>
         </div>
     );
