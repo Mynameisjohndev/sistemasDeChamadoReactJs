@@ -1,4 +1,5 @@
 .container{
+    justify-content: center;
     display: flex;
     background-color: #f8f8f8;
     border-radius: 5px;
@@ -54,6 +55,7 @@
 }
 
 .logout-btn{
+    width: 100%;
     padding: 8px 20px;
     background-color: transparent;
     border: 1px solid #121212;
