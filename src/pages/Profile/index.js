@@ -8,11 +8,37 @@ import Header from '../../components/Header';
 import Title from '../../components/Title';
 import avatar from '../../assets/avatar.png';
 
+import Firebase from '../../services/firebaseConection';
+
 const Profile = () => {
-    const { user } = useContext(UserContext);
+    const { user, signout, setUser, storageUser } = useContext(UserContext);
     const [name, setName] = useState(user && user.name);
     const [email, setEmail] = useState(user && user.email);
     const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
+    const [novoAvatarUrl, setNovoAvatarUrl] = useState(null);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if(novoAvatarUrl === null && name !== ""){
+            await Firebase.firestore().collection('users')
+            .doc(user.uid)
+            .update({ 
+                name: name
+            })
+            .then(()=>{
+                let data = {
+                    ...user,
+                    name: name
+                };
+                setUser(data);
+                storageUser(data);
+            })
+            .catch(()=>{
+
+            })
+        }
+
+    }
 
     return (
         <div >
@@ -23,7 +49,7 @@ const Profile = () => {
                 </Title>
 
                 <div className="container">
-                    <form className="form-profile">
+                    <form className="form-profile" onSubmit={handleSubmit}>
                         <label className="label-avatar">
                             <span>
                                 <FiUpload color="white" size={24} />
@@ -45,7 +71,7 @@ const Profile = () => {
                 </div>
                 <div className="container">
                     <button className="logout-btn">
-                                SAIR
+                        SAIR
                     </button>
                 </div>
             </div>

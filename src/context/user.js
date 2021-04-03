@@ -93,7 +93,9 @@ function UserProvider({ children }) {
             loadingAuth,
             signup,
             signout,
-            signin
+            signin,
+            setUser,
+            storageUser
         }}>
             {children}
         </UserContext.Provider>

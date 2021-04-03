@@ -15,7 +15,7 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(name != '' && email != '' && password != '' ){
+        if(name !== '' && email !== '' && password !== '' ){
             signup(email, password, name);
         }
 
