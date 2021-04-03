@@ -35,7 +35,7 @@ const Profile = () => {
                     storageUser(data);
                     toast.success("Nome editado com sucesso!");
                 })
-                .catch(()=>{
+                .catch(() => {
                     toast.error("Erro ao editar nome!");
                 })
         } else if (novoAvatarUrl !== null && name !== "") {
@@ -44,19 +44,51 @@ const Profile = () => {
 
     }
 
-    
-    const handleUpload = () =>{
-
+    const handleUpload = async () => {
+        const uid = user.uid;
+        const uploadTask = await Firebase.storage()
+            .ref(`images/${uid}/${novoAvatarUrl.name}`)
+            .put(novoAvatarUrl)
+            .then(async () => {
+                toast.success("Foto enviada com sucesso!");
+                await Firebase.storage().ref(`images/${uid}`)
+                    .child(novoAvatarUrl.name).getDownloadURL()
+                    .then(async (url) => {
+                        let urlFoto = url;
+                        await Firebase.firestore().collection('users')
+                        .doc(user.uid)
+                        .update({
+                            avatarUrl: urlFoto,
+                            name: name
+                        })
+                        .then(()=>{
+                            let data = {
+                                ...user,
+                                avatarUrl: urlFoto,
+                                name: name
+                            };
+                            setUser(data);
+                            storageUser(data);
+                            toast.success("Dados atualizados com sucesso!");
+                        })
+                        .catch(()=>{
+                            toast.error("Não foi possivel atualizar os dados!");
+                        })
+                    })
+            })
+            .catch(() => {
+                toast.error("Erro no sistema :(");
+            }) 
     }
-    
-    const handleFile = (event) =>{
-        if(event.target.files[0]){
+
+    const handleFile = (event) => {
+        if (event.target.files[0]) {
             const image = event.target.files[0]
-            if(image.type === 'image/jpeg' || image.type === 'image/png'){
+            if (image.type === 'image/jpeg' || image.type === 'image/png') {
                 setNovoAvatarUrl(image);
                 setAvatarUrl(URL.createObjectURL(event.target.files[0]))
             }
-        }else{
+        } else {
             alert("Envie imagens apenas jpeg ou png");
             setNovoAvatarUrl(null);
             return null;
@@ -78,7 +110,7 @@ const Profile = () => {
                             <span>
                                 <FiUpload color="white" size={24} />
                             </span>
-                            <input type="file" accept="image/*" onChange={handleFile}/><br />
+                            <input type="file" accept="image/*" onChange={handleFile} /><br />
                             {avatarUrl === null ? (
                                 <img width="250" height="250" alt="foto-do-usuario" src={avatar} />
                             ) : (
