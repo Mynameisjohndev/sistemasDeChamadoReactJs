@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react'
 import { FiSettings, FiUpload } from 'react-icons/fi'
+import { toast } from 'react-toastify'
 
 import { UserContext } from '../../context/user'
 import './profile.css';
@@ -19,26 +20,49 @@ const Profile = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(novoAvatarUrl === null && name !== ""){
+        if (novoAvatarUrl === null && name !== "") {
             await Firebase.firestore().collection('users')
-            .doc(user.uid)
-            .update({ 
-                name: name
-            })
-            .then(()=>{
-                let data = {
-                    ...user,
+                .doc(user.uid)
+                .update({
                     name: name
-                };
-                setUser(data);
-                storageUser(data);
-            })
-            .catch(()=>{
-
-            })
+                })
+                .then(() => {
+                    let data = {
+                        ...user,
+                        name: name
+                    };
+                    setUser(data);
+                    storageUser(data);
+                    toast.success("Nome editado com sucesso!");
+                })
+                .catch(()=>{
+                    toast.error("Erro ao editar nome!");
+                })
+        } else if (novoAvatarUrl !== null && name !== "") {
+            handleUpload()
         }
 
     }
+
+    
+    const handleUpload = () =>{
+
+    }
+    
+    const handleFile = (event) =>{
+        if(event.target.files[0]){
+            const image = event.target.files[0]
+            if(image.type === 'image/jpeg' || image.type === 'image/png'){
+                setNovoAvatarUrl(image);
+                setAvatarUrl(URL.createObjectURL(event.target.files[0]))
+            }
+        }else{
+            alert("Envie imagens apenas jpeg ou png");
+            setNovoAvatarUrl(null);
+            return null;
+        }
+    }
+
 
     return (
         <div >
@@ -54,7 +78,7 @@ const Profile = () => {
                             <span>
                                 <FiUpload color="white" size={24} />
                             </span>
-                            <input type="file" accept="image/*" /><br />
+                            <input type="file" accept="image/*" onChange={handleFile}/><br />
                             {avatarUrl === null ? (
                                 <img width="250" height="250" alt="foto-do-usuario" src={avatar} />
                             ) : (
