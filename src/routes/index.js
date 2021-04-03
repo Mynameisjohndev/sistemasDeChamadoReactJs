@@ -3,8 +3,9 @@ import { Switch } from 'react-router-dom';
 import Route from './Route'
 import SignIn from '../pages/SignIn/index';
 import SignUp from '../pages/SignUp/index';
-import Dashboard from '../pages/Dashboard/index'
-import Profile from '../pages/Profile/index'
+import Dashboard from '../pages/Dashboard/index';
+import Profile from '../pages/Profile/index';
+import Customers from '../pages/Customers/index';
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route exact path="/register" component={SignUp}/>
           <Route exact path="/dashboard" component={Dashboard} isPrivate/>
           <Route exact path="/profile" component={Profile} isPrivate/>
+          <Route exact path="/customers" component={Customers} isPrivate/>
       </Switch>
     );
   }

@@ -3,13 +3,14 @@ import { FiSettings, FiUpload } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 
 import { UserContext } from '../../context/user'
+import Firebase from '../../services/firebaseConection';
+
 import './profile.css';
+import avatar from '../../assets/avatar.png';
 
 import Header from '../../components/Header';
 import Title from '../../components/Title';
-import avatar from '../../assets/avatar.png';
 
-import Firebase from '../../services/firebaseConection';
 
 const Profile = () => {
     const { user, signout, setUser, storageUser } = useContext(UserContext);
@@ -56,29 +57,29 @@ const Profile = () => {
                     .then(async (url) => {
                         let urlFoto = url;
                         await Firebase.firestore().collection('users')
-                        .doc(user.uid)
-                        .update({
-                            avatarUrl: urlFoto,
-                            name: name
-                        })
-                        .then(()=>{
-                            let data = {
-                                ...user,
+                            .doc(user.uid)
+                            .update({
                                 avatarUrl: urlFoto,
                                 name: name
-                            };
-                            setUser(data);
-                            storageUser(data);
-                            toast.success("Dados atualizados com sucesso!");
-                        })
-                        .catch(()=>{
-                            toast.error("Não foi possivel atualizar os dados!");
-                        })
+                            })
+                            .then(() => {
+                                let data = {
+                                    ...user,
+                                    avatarUrl: urlFoto,
+                                    name: name
+                                };
+                                setUser(data);
+                                storageUser(data);
+                                toast.success("Dados atualizados com sucesso!");
+                            })
+                            .catch(() => {
+                                toast.error("Não foi possivel atualizar os dados!");
+                            })
                     })
             })
             .catch(() => {
                 toast.error("Erro no sistema :(");
-            }) 
+            })
     }
 
     const handleFile = (event) => {
