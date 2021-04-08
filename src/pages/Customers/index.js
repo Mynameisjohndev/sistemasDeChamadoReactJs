@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { FiUser } from 'react-icons/fi'
 import './styles.css';
+import { toast } from 'react-toastify'
 
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 
+import Firebase from '../../services/firebaseConection'
 
 const Customers = () => {
 
@@ -12,8 +14,29 @@ const Customers = () => {
     const [cnpj, setCnpj] = useState('');
     const [endereco, setEndereco] = useState('');
 
-    const handleCreateUser = (event) => {
+    const handleCreateUser = async (event) => {
         event.preventDefault();
+
+        if(nomeFantasia !== "" && cnpj !== "" && endereco !== ""){
+            await Firebase.firestore().collection('Customers')
+            .add({
+                nomeFantasia: nomeFantasia,
+                cnpj: cnpj,
+                endereco: endereco
+            })
+            .then(()=>{
+                toast.success("Cliente cadastrado com sucesso!");
+                setNomeFantasia("");
+                setCnpj("");
+                setEndereco("");
+            })
+            .catch(()=>{
+                toast.error("Erro ao cadastrar cliente!");
+            })
+        }else{
+            toast.warning("Preencha os dados!");
+        }
+
     }
 
     return (
