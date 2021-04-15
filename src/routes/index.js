@@ -6,6 +6,7 @@ import SignUp from '../pages/SignUp/index';
 import Dashboard from '../pages/Dashboard/index';
 import Profile from '../pages/Profile/index';
 import Customers from '../pages/Customers/index';
+import New from '../pages/new/index';
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route exact path="/dashboard" component={Dashboard} isPrivate/>
           <Route exact path="/profile" component={Profile} isPrivate/>
           <Route exact path="/customers" component={Customers} isPrivate/>
+          <Route exact path="/new" component={New} isPrivate/>
       </Switch>
     );
   }

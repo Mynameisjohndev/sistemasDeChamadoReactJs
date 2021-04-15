@@ -10,7 +10,7 @@ import './dashboard.css'
 
 const Dashboard = () => {
   const { signout } = useContext(UserContext)
-  const [chamados, setChamados] = useState([1]);
+  const [chamados, setChamados] = useState([]);
   return (
     <div>
       <Header/>
