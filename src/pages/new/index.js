@@ -9,7 +9,7 @@ import { FiPlusCircle } from 'react-icons/fi'
 const New = () => {
 
     const [assunto, setAssunto] = useState("Suporte");
-
+    const [status, setStatus] = useState("Em aberto");
 
     function handleRegister(e) {
         e.preventDefault();
@@ -18,6 +18,10 @@ const New = () => {
 
     const handleOption = (e) => {
         setAssunto(e.target.value);
+    }
+
+    const handleStatus = (e) => {
+        setStatus(e.target.value);
         console.log(e.target.value);
     }
 
@@ -54,6 +58,7 @@ const New = () => {
                                 type="radio"
                                 name="radio"
                                 value="Aberto"
+                                onChange={handleStatus}
                             />
                             <span>Em Aberto</span>
 
@@ -61,6 +66,7 @@ const New = () => {
                                 type="radio"
                                 name="radio"
                                 value="Progresso"
+                                onChange={handleStatus}
                             />
                             <span>Progresso</span>
 
@@ -68,6 +74,7 @@ const New = () => {
                                 type="radio"
                                 name="radio"
                                 value="Atendido"
+                                onChange={handleStatus}
                             />
                             <span>Atendido</span>
                         </div>
