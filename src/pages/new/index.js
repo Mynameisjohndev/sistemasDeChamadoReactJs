@@ -10,19 +10,19 @@ const New = () => {
 
     const [assunto, setAssunto] = useState("Suporte");
     const [status, setStatus] = useState("Em aberto");
+    const [descricao, setDescricao] = useState("");
 
     function handleRegister(e) {
         e.preventDefault();
-        alert('TESTE')
+        //alert('TESTE')
     }
 
     const handleOption = (e) => {
         setAssunto(e.target.value);
     }
-
+    
     const handleStatus = (e) => {
         setStatus(e.target.value);
-        console.log(e.target.value);
     }
 
     return (
@@ -86,6 +86,7 @@ const New = () => {
                         <textarea
                             type="text"
                             placeholder="Descreva seu problema (opcional)."
+                            onChange={(e) => setDescricao(e.target.value)}
                         />
 
                         <button type="submit">Registrar</button>
