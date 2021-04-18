@@ -59,6 +59,7 @@ const New = () => {
                                 name="radio"
                                 value="Aberto"
                                 onChange={handleStatus}
+                                checked={status === "Aberto"}
                             />
                             <span>Em Aberto</span>
 
@@ -67,6 +68,7 @@ const New = () => {
                                 name="radio"
                                 value="Progresso"
                                 onChange={handleStatus}
+                                checked={status === "Progresso"}
                             />
                             <span>Progresso</span>
 
@@ -75,6 +77,7 @@ const New = () => {
                                 name="radio"
                                 value="Atendido"
                                 onChange={handleStatus}
+                                checked={status === "Atendido"}
                             />
                             <span>Atendido</span>
                         </div>
