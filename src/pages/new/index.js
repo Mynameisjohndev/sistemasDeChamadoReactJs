@@ -89,9 +89,11 @@ const New = () => {
 
                         <label>Cliente</label>
                         <select value={customerSelected} onChange={handleCustomerSelected}>
-                            <option key={1} value={1}>
-                                Jooj
-                            </option>
+                            {customers.map((item, index) =>{
+                                return (
+                                    <option key={item.id} value={index}>{item.nomeFantasia}</option>
+                                )
+                            })}
                         </select>
 
                         <label>Assunto</label>
