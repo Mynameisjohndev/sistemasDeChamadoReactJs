@@ -88,15 +88,19 @@ const New = () => {
                     <form className="form-profile" onSubmit={handleRegister} >
 
                         <label>Cliente</label>
-                        <select value={customerSelected} onChange={handleCustomerSelected}>
-                            {customers.map((item, index) => {
-                                return (
-                                    <option key={item.id} value={index}>
-                                        {item.nomeFantasia}
-                                    </option>
-                                )
-                            })}
-                        </select>
+                        {customers.length === 0 ? (
+                            <input type="text" disabled={true} value="Carregando clientes ..."/>
+                        ) : (
+                            <select value={customerSelected} onChange={handleCustomerSelected}>
+                                {customers.map((item, index) => {
+                                    return (
+                                        <option key={item.id} value={index}>
+                                            {item.nomeFantasia}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        )}
 
                         <label>Assunto</label>
                         <select value={assunto} onChange={handleOption}>
