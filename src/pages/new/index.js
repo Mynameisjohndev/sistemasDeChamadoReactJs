@@ -1,16 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { FiPlusCircle } from 'react-icons/fi'
+import { toast } from 'react-toastify'
 
+import { UserContext } from '../../context/user'
+import Firebase from '../../services/firebaseConection';
+
+import './new.css';
 import Header from '../../components/Header';
 import Title from '../../components/Title';
 
-import './new.css';
-import { FiPlusCircle } from 'react-icons/fi'
 
 const New = () => {
 
     const [assunto, setAssunto] = useState("Suporte");
     const [status, setStatus] = useState("Em aberto");
     const [descricao, setDescricao] = useState("");
+
+    const [customers, setCustomers] = useState([]);
+    const [loadCustomers, setLoadCustomers] = useState(true);
+    const [customerSelected, setCustomerSelected] = useState(0);
+
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+
+        const loadCustomers = async () => {
+            await Firebase.firestore().collection('Customers')
+                .get()
+                .then((response) => {
+
+                    let lista = [];
+
+                    response.forEach((customer) => {
+                        lista.push({
+                            id: customer.id,
+                            nomeFantasia: customer.data().nomeFantasia
+                        })
+                    })
+
+                    if (lista === 0) {
+                        setLoadCustomers(false);
+                        setCustomers([{ id: '1', nomeFantasia: 'Freela' }])
+                        return;
+                    }
+
+                    setCustomers(lista);
+                    setLoadCustomers(false);
+                   
+                })
+                .catch(() => {
+                    setLoadCustomers(false);
+                    setCustomers([{ id: '1', nomeFantasia: '' }])
+                    toast.error("Erro ao carregar os dados");
+                })
+        }
+        loadCustomers();
+    }, [])
 
     function handleRegister(e) {
         e.preventDefault();
@@ -20,9 +65,13 @@ const New = () => {
     const handleOption = (e) => {
         setAssunto(e.target.value);
     }
-    
+
     const handleStatus = (e) => {
         setStatus(e.target.value);
+    }
+
+    const handleCustomerSelected = () => {
+
     }
 
     return (
@@ -39,10 +88,10 @@ const New = () => {
                     <form className="form-profile" onSubmit={handleRegister} >
 
                         <label>Cliente</label>
-                        <select>
+                        <select value={customerSelected} onChange={handleCustomerSelected}>
                             <option key={1} value={1}>
                                 Jooj
-              </option>
+                            </option>
                         </select>
 
                         <label>Assunto</label>
