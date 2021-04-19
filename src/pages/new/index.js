@@ -46,7 +46,7 @@ const New = () => {
 
                     setCustomers(lista);
                     setLoadCustomers(false);
-                   
+
                 })
                 .catch(() => {
                     setLoadCustomers(false);
@@ -59,7 +59,6 @@ const New = () => {
 
     function handleRegister(e) {
         e.preventDefault();
-        //alert('TESTE')
     }
 
     const handleOption = (e) => {
@@ -70,8 +69,9 @@ const New = () => {
         setStatus(e.target.value);
     }
 
-    const handleCustomerSelected = () => {
-
+    const handleCustomerSelected = (e) => {
+        setCustomerSelected(e.target.value)
+        console.log(customers[e.target.value])
     }
 
     return (
@@ -89,9 +89,11 @@ const New = () => {
 
                         <label>Cliente</label>
                         <select value={customerSelected} onChange={handleCustomerSelected}>
-                            {customers.map((item, index) =>{
+                            {customers.map((item, index) => {
                                 return (
-                                    <option key={item.id} value={index}>{item.nomeFantasia}</option>
+                                    <option key={item.id} value={index}>
+                                        {item.nomeFantasia}
+                                    </option>
                                 )
                             })}
                         </select>
