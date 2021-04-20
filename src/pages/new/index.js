@@ -23,7 +23,6 @@ const New = () => {
     const { user } = useContext(UserContext);
 
     useEffect(() => {
-
         const loadCustomers = async () => {
             await Firebase.firestore().collection('Customers')
                 .get()
@@ -57,8 +56,26 @@ const New = () => {
         loadCustomers();
     }, [])
 
-    function handleRegister(e) {
+    const handleRegister = async (e) => {
         e.preventDefault();
+
+        Firebase.firestore().collection("Chamados")
+            .add({
+                created_at: new Date(),
+                customer: customers[customerSelected].nomeFantasia,
+                customer_id: customers[customerSelected].id,
+                subject: assunto,
+                status: status,
+                complement: descricao,
+                user_id: user.uid
+            })
+            .then(() => {
+                toast.success("Chamado cadastrado com sucesso!");
+            })
+            .catch(() => {
+                toast.error("Preencha os campos!");
+            })
+
     }
 
     const handleOption = (e) => {
@@ -89,7 +106,7 @@ const New = () => {
 
                         <label>Cliente</label>
                         {customers.length === 0 ? (
-                            <input type="text" disabled={true} value="Carregando clientes ..."/>
+                            <input type="text" disabled={true} value="Carregando clientes ..." />
                         ) : (
                             <select value={customerSelected} onChange={handleCustomerSelected}>
                                 {customers.map((item, index) => {
