@@ -58,7 +58,6 @@ const New = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-
         Firebase.firestore().collection("Chamados")
             .add({
                 created_at: new Date(),
@@ -70,12 +69,13 @@ const New = () => {
                 user_id: user.uid
             })
             .then(() => {
+                setDescricao("");
+                setCustomerSelected(0);
                 toast.success("Chamado cadastrado com sucesso!");
             })
             .catch(() => {
                 toast.error("Preencha os campos!");
             })
-
     }
 
     const handleOption = (e) => {
