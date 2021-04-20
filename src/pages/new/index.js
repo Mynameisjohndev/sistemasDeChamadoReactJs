@@ -74,7 +74,7 @@ const New = () => {
                 toast.success("Chamado cadastrado com sucesso!");
             })
             .catch(() => {
-                toast.error("Preencha os campos!");
+                toast.error("Houve um erro ao cadastrar!");
             })
     }
 

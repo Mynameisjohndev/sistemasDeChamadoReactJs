@@ -13,7 +13,7 @@ import './dashboard.css'
 
 const Dashboard = () => {
     const { signout } = useContext(UserContext)
-    const [chamados, setChamados] = useState([0]);
+    const [chamados, setChamados] = useState([]);
 
     const listREF = Firebase.firestore().collection("Chamados").orderBy("created_at", "desc");
     const [loading, setLoading] = useState(true);
@@ -120,22 +120,26 @@ const Dashboard = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td data-label="Cliente">Sujeito</td>
-                                    <td data-label="Assunto">Suporte</td>
-                                    <td data-label="Status">
-                                        <span className="badge" style={{ backgroundColor: '#5cb85c' }}>Em aberto</span>
-                                    </td>
-                                    <td data-label="Cadastrado">20/06/2021</td>
-                                    <td data-label="#">
-                                        <button className="action" style={{ backgroundColor: '#3583f6' }}>
-                                            <FiSearch color="#FFF" size={17} />
-                                        </button>
-                                        <button className="action" style={{ backgroundColor: '#F6a935' }}>
-                                            <FiEdit2 color="#FFF" size={17} />
-                                        </button>
-                                    </td>
-                                </tr>
+                                {chamados.map((item, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td data-label="Cliente">{item.cliente}</td>
+                                            <td data-label="Assunto">{item.assunto}</td>
+                                            <td data-label="Status">
+                                                <span className="badge" style={{ backgroundColor: '#5cb85c' }}>{item.status}</span>
+                                            </td>
+                                            <td data-label="Cadastrado">{item.createdFormated}</td>
+                                            <td data-label="#">
+                                                <button className="action" style={{ backgroundColor: '#3583f6' }}>
+                                                    <FiSearch color="#FFF" size={17} />
+                                                </button>
+                                                <button className="action" style={{ backgroundColor: '#F6a935' }}>
+                                                    <FiEdit2 color="#FFF" size={17} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </>
