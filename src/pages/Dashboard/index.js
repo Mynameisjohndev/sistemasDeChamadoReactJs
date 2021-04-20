@@ -67,6 +67,16 @@ const Dashboard = () => {
         setLoadingMore(false);
     }
 
+    const handleMore = async () => {
+        setLoadingMore(true);
+        await listREF.startAfter(lastDocs).limit(5)
+            .get()
+            .then((snapshot) => {
+                updateState(snapshot)
+            })
+    }
+
+
     if (loading) {
         return (
             <div>
@@ -126,7 +136,7 @@ const Dashboard = () => {
                                             <td data-label="Cliente">{item.cliente}</td>
                                             <td data-label="Assunto">{item.assunto}</td>
                                             <td data-label="Status">
-                                                <span className="badge" style={{ backgroundColor: item.status === "Aberto" ? '#5cb85c' : "#999"}}>{item.status}</span>
+                                                <span className="badge" style={{ backgroundColor: item.status === "Aberto" ? '#5cb85c' : "#999" }}>{item.status}</span>
                                             </td>
                                             <td data-label="Cadastrado">{item.createdFormated}</td>
                                             <td data-label="#">
@@ -142,6 +152,8 @@ const Dashboard = () => {
                                 })}
                             </tbody>
                         </table>
+                        {loadingMore && <h3 style={{ textAlign: 'center', marginTop: 15 }}>Buscando dados...</h3>}
+                        {!loadingMore && !isEmpty && <button className="btn-more" onClick={handleMore}>Buscar mais</button>}
                     </>
                 )}
 
