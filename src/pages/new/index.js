@@ -20,6 +20,7 @@ const New = () => {
     const [loadCustomers, setLoadCustomers] = useState(true);
     const [customerSelected, setCustomerSelected] = useState(0);
 
+    const [selectCustom, setSelectCustom] = useState(false)
     const { user } = useContext(UserContext);
     const { id } = useParams();
     const history = useHistory();
@@ -73,13 +74,36 @@ const New = () => {
 
             let index = Lista.findIndex(item => item.id === res.data().customer_id)
             setCustomerSelected(index);
-
+            setSelectCustom(true);
         })
 
     }
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if(selectCustom){
+            await Firebase.firestore().collection("Chamados").doc(id)
+            .update({ 
+                customer: customers[customerSelected].nomeFantasia,
+                customer_id: customers[customerSelected].id,
+                subject: assunto,
+                status: status,
+                complement: descricao,
+                user_id: user.uid
+            })
+            .then(() =>{
+                toast.success("Chamado editado com sucesso!");
+                setDescricao("");
+                setCustomerSelected(0);
+                history.push('/dashboard')
+            })
+            .catch(() => {
+                toast.error("Houve um erro ao editar!");
+            })
+            return;
+        }
+
         Firebase.firestore().collection("Chamados")
             .add({
                 created_at: new Date(),
