@@ -3,11 +3,11 @@ import {useContext} from 'react'
 
 import { UserContext } from '../context/user'
 
-function RouteWrapper ({
+const RouteWrapper  = ({
     component: Component,
     isPrivate,
     ...rest
-})  {
+})  => {
 
     const { signed, loading } = useContext(UserContext)
 

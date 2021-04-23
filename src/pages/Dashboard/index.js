@@ -6,39 +6,41 @@ import { format } from 'date-fns'
 
 import Header from '../../components/Header';
 import Title from '../../components/Title';
-
+import Modal from '../../components/Modal';
 import Firebase from '../../services/firebaseConection';
 
 import './dashboard.css'
+const listREF = Firebase.firestore().collection("Chamados").orderBy("created_at", "desc");
 
 const Dashboard = () => {
-    const { signout } = useContext(UserContext)
+    const { } = useContext(UserContext)
     const [chamados, setChamados] = useState([]);
 
-    const listREF = Firebase.firestore().collection("Chamados").orderBy("created_at", "desc");
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [isEmpty, setIsEmpty] = useState(false);
     const [lastDocs, setLastDocs] = useState();
 
+    const [ showPostModal, setShoePostModal ] = useState(false);
+    const [ details, setDetails ] = useState();
+
     useEffect(() => {
+        const loadChamados = async () => {
+            await listREF.limit(5)
+                .get()
+                .then((res) => {
+                    updateState(res);
+                    setLoadingMore(false);
+                })
+                .catch(() => {
+                });
+            setLoading(false);
+        }
         loadChamados();
         return () => {
         }
     }, [])
 
-    const loadChamados = async () => {
-        await listREF.limit(5)
-            .get()
-            .then((res) => {
-                updateState(res);
-                setLoadingMore(false);
-            })
-            .catch(() => {
-
-            });
-        setLoading(false);
-    }
 
     const updateState = async (res) => {
         const isCollectionEmpty = res.size === 0;
@@ -63,7 +65,6 @@ const Dashboard = () => {
         } else {
             setIsEmpty(true);
         }
-
         setLoadingMore(false);
     }
 
@@ -75,7 +76,10 @@ const Dashboard = () => {
                 updateState(snapshot)
             })
     }
-
+    const loadItem = (item) =>{
+        setShoePostModal(!showPostModal);
+        setDetails(item);
+    }
 
     if (loading) {
         return (
@@ -85,11 +89,9 @@ const Dashboard = () => {
                     <Title name="Atendimentos">
                         <FiMessageSquare size={25} />
                     </Title>
-
                     <div className="container dashboard">
                         <span>Buscando chamados...</span>
                     </div>
-
                 </div>
             </div>
         )
@@ -140,7 +142,7 @@ const Dashboard = () => {
                                             </td>
                                             <td data-label="Cadastrado">{item.createdFormated}</td>
                                             <td data-label="#">
-                                                <button className="action" style={{ backgroundColor: '#3583f6' }}>
+                                                <button className="action" style={{ backgroundColor: '#3583f6' }} onClick={() => loadItem(item)}>
                                                     <FiSearch color="#FFF" size={17} />
                                                 </button>
                                                 <button className="action" style={{ backgroundColor: '#F6a935' }}>
@@ -158,6 +160,13 @@ const Dashboard = () => {
                 )}
 
             </div>
+
+            {showPostModal && (
+                <Modal
+                    conteudo={details}
+                    close={loadItem}
+                />
+            )}
 
         </div>
     );
