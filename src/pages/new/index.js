@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FiPlusCircle } from 'react-icons/fi'
 import { toast } from 'react-toastify'
-
+import { useHistory, useParams } from 'react-router-dom';
 import { UserContext } from '../../context/user'
 import Firebase from '../../services/firebaseConection';
 
@@ -14,13 +14,16 @@ const New = () => {
 
     const [assunto, setAssunto] = useState("Suporte");
     const [status, setStatus] = useState("Em aberto");
-    const [descricao, setDescricao] = useState("");
+    const [descricao, setDescricao] = useState();
 
     const [customers, setCustomers] = useState([]);
     const [loadCustomers, setLoadCustomers] = useState(true);
     const [customerSelected, setCustomerSelected] = useState(0);
 
     const { user } = useContext(UserContext);
+    const { id } = useParams();
+    const history = useHistory();
+
 
     useEffect(() => {
         const loadCustomers = async () => {
@@ -46,6 +49,10 @@ const New = () => {
                     setCustomers(lista);
                     setLoadCustomers(false);
 
+                    if(id){
+                        loadId(lista)
+                    }
+
                 })
                 .catch(() => {
                     setLoadCustomers(false);
@@ -55,6 +62,21 @@ const New = () => {
         }
         loadCustomers();
     }, [])
+
+    const loadId = async (Lista) => {
+        await Firebase.firestore().collection("Chamados").doc(id)
+        .get()
+        .then((res) =>{
+            setAssunto(res.data().subject);
+            setStatus(res.data().status);
+            setDescricao(res.data().complement);
+
+            let index = Lista.findIndex(item => item.id === res.data().customer_id)
+            setCustomerSelected(index);
+
+        })
+
+    }
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -159,6 +181,7 @@ const New = () => {
                         <label>Complemento</label>
                         <textarea
                             type="text"
+                            value={descricao}
                             placeholder="Descreva seu problema (opcional)."
                             onChange={(e) => setDescricao(e.target.value)}
                         />

@@ -3,6 +3,7 @@ import { FiMessageSquare, FiPlus, FiSearch, FiEdit2 } from 'react-icons/fi'
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../context/user'
 import { format } from 'date-fns'
+import { useHistory, useParams } from 'react-router-dom';
 
 import Header from '../../components/Header';
 import Title from '../../components/Title';
@@ -23,6 +24,9 @@ const Dashboard = () => {
 
     const [ showPostModal, setShoePostModal ] = useState(false);
     const [ details, setDetails ] = useState();
+
+    const { id } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
         const loadChamados = async () => {
@@ -145,9 +149,9 @@ const Dashboard = () => {
                                                 <button className="action" style={{ backgroundColor: '#3583f6' }} onClick={() => loadItem(item)}>
                                                     <FiSearch color="#FFF" size={17} />
                                                 </button>
-                                                <button className="action" style={{ backgroundColor: '#F6a935' }}>
+                                                <Link className="action" style={{ backgroundColor: '#F6a935' }} to={`/new/${item.id}`}>
                                                     <FiEdit2 color="#FFF" size={17} />
-                                                </button>
+                                                </Link>
                                             </td>
                                         </tr>
                                     )
